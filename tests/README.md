@@ -57,12 +57,6 @@ python tests/test_elastic_simple.py
 python tests/test_scaling.py
 ```
 
-## Test Results
-
-See [docs/TEST_RESULTS_TOPOLOGY.md](../docs/TEST_RESULTS_TOPOLOGY.md) for topology test results.
-
-See [docs/TEST_RESULTS.md](../docs/TEST_RESULTS.md) for general test results.
-
 ## Writing New Tests
 
 When writing new tests:

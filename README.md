@@ -237,7 +237,7 @@ This will showcase:
 - System statistics
 - CLI help
 
-**Note**: For visual screenshots, see [SCREENSHOTS.md](SCREENSHOTS.md) for a guide on capturing terminal output and creating visual documentation.
+**Note**: The examples above show actual command output. You can capture terminal screenshots using your system's screenshot tools or terminal recording software.
 
 ## CLI Commands
 
