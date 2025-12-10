@@ -1,0 +1,14 @@
+# Include README and license files in source distribution
+include README.md
+include LICENSE
+include pyproject.toml
+include MANIFEST.in
+
+# Include example config files
+recursive-include config *.conf.example
+
+# Exclude build artifacts
+global-exclude __pycache__
+global-exclude *.py[co]
+global-exclude *.db
+global-exclude *.db-journal

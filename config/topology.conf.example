@@ -1,0 +1,37 @@
+# Mini-SLURM Topology Configuration File
+# Similar to SLURM's topology plugin configuration
+#
+# This file defines the network switch hierarchy and node-to-switch mappings
+# to enable topology-aware scheduling. The scheduler will prefer allocating
+# nodes that are "close" (same leaf switch) over nodes that are "far" (crossing core switches).
+
+# Enable topology plugin
+TopologyPlugin=topology/tree
+
+# Define leaf switches and their nodes
+# Format: SwitchName=<switch_name> Nodes=<node_list>
+# Node lists can use ranges: node[1-4] means node1, node2, node3, node4
+SwitchName=switch1 Nodes=node[1-4]
+SwitchName=switch2 Nodes=node[5-8]
+SwitchName=switch3 Nodes=node[9-12]
+SwitchName=switch4 Nodes=node[13-16]
+
+# Define core switch hierarchy
+# Format: SwitchName=<parent_switch> Switches=<child_switches>
+# This creates a tree: core1 -> switch1, switch2, switch3, switch4
+SwitchName=core1 Switches=switch[1-4]
+
+# Example with more complex hierarchy:
+# SwitchName=switch1 Nodes=node[1-2]
+# SwitchName=switch2 Nodes=node[3-4]
+# SwitchName=switch3 Nodes=node[5-6]
+# SwitchName=switch4 Nodes=node[7-8]
+# SwitchName=rack1 Switches=switch[1-2]
+# SwitchName=rack2 Switches=switch[3-4]
+# SwitchName=core1 Switches=rack[1-2]
+
+# Notes:
+# - Nodes on the same leaf switch have distance 0 (preferred)
+# - Nodes on different leaf switches but same core have distance 2
+# - Nodes on different cores have distance 4+
+# - The scheduler will try to minimize the maximum distance between allocated nodes
