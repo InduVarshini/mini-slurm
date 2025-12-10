@@ -237,8 +237,6 @@ This will showcase:
 - System statistics
 - CLI help
 
-**Note**: The examples above show actual command output. You can capture terminal screenshots using your system's screenshot tools or terminal recording software.
-
 ## CLI Commands
 
 Get help for any command:
