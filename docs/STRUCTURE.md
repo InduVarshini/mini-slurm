@@ -60,8 +60,6 @@ mini-slurm/
 │       ├── test_topology_simple.sh  # Shell script topology test
 │       └── test_workload.py         # Test workload helper
 │
-└── scripts/               # Utility scripts
-    └── view_logs.py       # Log viewing utility
 ```
 
 ## File Descriptions
@@ -128,12 +126,6 @@ Test scripts for verifying functionality:
 - **test_topology_simple.sh**: Shell script for manual topology testing
 - **test_workload.py**: Simple CPU workload helper for testing
 
-### scripts/
-
-Utility scripts:
-
-- **view_logs.py**: Command-line tool for viewing job logs
-
 ## Data Files (Not in Repository)
 
 These files are created at runtime and ignored by git:
@@ -167,11 +159,8 @@ python3 tests/topology/test_topology_direct.py
 ### Viewing Logs
 
 ```bash
-# Use the utility script
-python3 scripts/view_logs.py <job_id>
-
-# Or directly
 cat ~/.mini_slurm_logs/job_<id>.out
+cat ~/.mini_slurm_logs/job_<id>.err
 ```
 
 ### Submitting Example Workloads
@@ -189,8 +178,7 @@ python3 examples.py macbook
 2. **Documentation Centralization**: All docs in `docs/` directory
 3. **Test Organization**: All tests in `tests/` directory, with feature-specific subdirectories
 4. **Configuration Files**: Example configs in `config/` directory
-5. **Utility Scripts**: Helper scripts in `scripts/` directory
-6. **Example Workloads**: Example tasks in `tasks/` directory
+5. **Example Workloads**: Example tasks in `tasks/` directory
 7. **Feature Grouping**: Related tests grouped in subdirectories (e.g., `tests/topology/`)
 
 ## Adding New Files
@@ -200,7 +188,6 @@ When adding new files:
 - **Documentation**: Add to `docs/`
 - **Tests**: Add to `tests/` (create subdirectories for feature-specific tests)
 - **Configuration Examples**: Add to `config/`
-- **Utility Scripts**: Add to `scripts/`
 - **Example Tasks**: Add to `tasks/`
 - **Core Code**: Add to root or appropriate subdirectory
 

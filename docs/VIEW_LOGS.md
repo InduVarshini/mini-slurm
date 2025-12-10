@@ -170,7 +170,7 @@ from pathlib import Path
 log_dir = Path.home() / ".mini_slurm_logs"
 
 if len(sys.argv) < 2:
-    print("Usage: python3 scripts/view_logs.py <job_id> [out|err]")
+    print("Usage: python3 view_logs.py <job_id> [out|err]")
     print("\nAvailable logs:")
     for log_file in sorted(log_dir.glob("job_*.out")):
         job_id = log_file.stem.split("_")[1]
@@ -192,8 +192,8 @@ with open(log_file, 'r') as f:
 
 Save as `view_logs.py` and use:
 ```bash
-python3 scripts/view_logs.py 1        # View job 1 stdout
-python3 scripts/view_logs.py 1 err     # View job 1 stderr
+python3 view_logs.py 1        # View job 1 stdout
+python3 view_logs.py 1 err     # View job 1 stderr
 ```
 
 ## Example Log Output

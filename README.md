@@ -222,21 +222,6 @@ $ mini-slurm scheduler
 [mini-slurm] Job 11 finished with rc=0 runtime=3.45s
 ```
 
-### Running the Demo
-
-To see all features in action, run the demo script:
-
-```bash
-python scripts/demo.py
-```
-
-This will showcase:
-- Job submission (regular and elastic)
-- Queue viewing
-- Job details
-- System statistics
-- CLI help
-
 ## CLI Commands
 
 Get help for any command:
@@ -466,8 +451,6 @@ mini-slurm/
 │   ├── test_scaling.py
 │   └── topology/        # Topology-aware scheduling tests
 │       └── ...
-└── scripts/              # Utility scripts
-    └── view_logs.py
 ```
 
 See [docs/STRUCTURE.md](docs/STRUCTURE.md) for detailed structure documentation.
