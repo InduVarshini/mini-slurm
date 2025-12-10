@@ -12,6 +12,21 @@ Mini-SLURM is a lightweight, local job scheduler inspired by SLURM (Simple Linux
 - **Rich CLI Interface**: Multiple commands for job management and monitoring
 - **Cross-Platform**: Works on macOS and Linux
 
+## Key Features
+
+### Elastic Jobs
+
+Mini-SLURM supports **elastic/auto-resizing jobs** that can dynamically scale their resource allocation - a feature that traditional SLURM does not support. Elastic jobs can scale up when resources are available and scale down when high-priority jobs arrive.
+
+**Example:**
+```bash
+mini-slurm submit --elastic --cpus 2 --min-cpus 2 --max-cpus 8 --mem 4GB python elastic_training.py
+```
+
+### Topology-Aware Scheduling
+
+Mini-SLURM supports **topology-aware scheduling** similar to SLURM's topology plugin. The scheduler understands network switch hierarchy and prefers allocating nodes that are "close" (same leaf switch) over nodes that are "far" (crossing core switches), optimizing for network locality.
+
 ## Requirements
 
 - Python 3.8+
@@ -92,134 +107,29 @@ mini-slurm show <job_id>
 mini-slurm stats
 ```
 
-## Examples & Screenshots
+## Examples
 
-### Job Submission
-
-Submit jobs with different resource requirements and priorities:
+### Basic Usage
 
 ```bash
+# Submit jobs
 $ mini-slurm submit --cpus 2 --mem 4GB --priority 5 "echo 'Hello from mini-slurm!'"
 Submitted job 15
   cpus=2, mem=4096MB, priority=5
-  command=echo 'Hello from mini-slurm!'
 
-$ mini-slurm submit --cpus 4 --mem 8GB --priority 10 python train.py --epochs 100
-Submitted job 16
-  cpus=4, mem=8192MB, priority=10
-  command=python train.py --epochs 100
-
-$ mini-slurm submit --cpus 2 --mem 4GB --elastic --min-cpus 2 --max-cpus 8 python elastic_training.py
-Submitted job 17
-  [ELASTIC] cpus=2 (min=2, max=8), mem=4096MB, priority=0
-  command=python elastic_training.py
-```
-
-### Viewing Job Queue
-
-Check the status of all jobs:
-
-```bash
+# View queue
 $ mini-slurm queue
   ID     STAT CPU MEM(MB) PRI  WAIT(s)   RUN(s)  ELASTIC              SUBMIT COMMAND
-  11  PENDING   2    4096   0      0.0      0.0          2025-12-09 19:05:33 python train.py --epochs 10
-  12  PENDING   4    8192   5      0.0      0.0          2025-12-09 19:05:33 python hyperparameter_sweep.py
-  13  PENDING   1    2048   0      0.0      0.0          2025-12-09 19:05:33 python preprocess_data.py
-  14  PENDING   2    4096   0      0.0      0.0      2/8 2025-12-09 19:05:33 python train.py --epochs 20
-  15  PENDING   2    4096   5      0.0      0.0          2025-12-09 19:05:38 echo 'Hello from mini-slurm!'
-```
+  11  PENDING   2    4096   0      0.0      0.0          2025-12-09 19:05:33 python train.py
 
-Filter by status:
-
-```bash
-$ mini-slurm queue --status PENDING
-  ID     STAT CPU MEM(MB) PRI  WAIT(s)   RUN(s)  ELASTIC              SUBMIT COMMAND
-  11  PENDING   2    4096   0      0.0      0.0          2025-12-09 19:05:33 python train.py --epochs 10
-  12  PENDING   4    8192   5      0.0      0.0          2025-12-09 19:05:33 python hyperparameter_sweep.py
-  13  PENDING   1    2048   0      0.0      0.0          2025-12-09 19:05:33 python preprocess_data.py
-```
-
-### Viewing Job Details
-
-Get detailed information about a specific job:
-
-```bash
+# View job details
 $ mini-slurm show 1
 Job 1
-  User:        indu
   Status:      COMPLETED
-  Priority:    5
-  Command:     python -c 'import time; [sum(i*i for i in range(10000)) for _ in range(1000)]; time.sleep(5)'
   CPUs:        2
   Mem (MB):    2048
-  Nodes:       node1,node2
-  Submitted:   2025-12-09 18:20:33
-  Started:     2025-12-09 18:21:12
-  Ended:       2025-12-09 18:21:17
   Wait time:   38.84s
   Runtime:     5.60s
-  Return code: 0
-  Stdout:      ~/.mini_slurm_logs/job_1.out
-  Stderr:      ~/.mini_slurm_logs/job_1.err
-```
-
-### System Statistics
-
-View comprehensive system and job statistics:
-
-```bash
-$ mini-slurm stats
-============================================================
-Mini-SLURM Statistics
-============================================================
-
-System Resources:
-  Total CPUs:     8
-  Used CPUs:      8 (100.0%)
-  Available CPUs: 0
-  Total Memory:   16384 MB (16.0 GB)
-  Used Memory:    4096 MB (25.0%)
-  Available Mem:  12288 MB
-  System CPU %:   8.6%
-  System Mem %:   72.5%
-
-Job Statistics:
-  Total Jobs:     14
-  Running:        1
-  Pending:        4
-  COMPLETED    9
-
-Performance Metrics (completed jobs):
-  Average Wait Time:  4.33 seconds
-  Average Runtime:    5.13 seconds
-```
-
-### Elastic Jobs
-
-Elastic jobs can dynamically scale their resource allocation. The queue shows current/max CPUs:
-
-```bash
-$ mini-slurm queue
-  ID     STAT CPU MEM(MB) PRI  WAIT(s)   RUN(s)  ELASTIC              SUBMIT COMMAND
-  10  RUNNING   8    4096   5      0.4      0.0      8/8 2025-12-09 18:21:36 EPOCHS=20 python tasks/elastic_training.py
-  14  PENDING   2    4096   0      0.0      0.0      2/8 2025-12-09 19:05:33 python train.py --epochs 20
-```
-
-The `8/8` indicates the job is currently using 8 CPUs out of a maximum of 8.
-
-### Scheduler Output
-
-When running the scheduler, you'll see real-time job execution:
-
-```bash
-$ mini-slurm scheduler
-[mini-slurm] Starting scheduler with 8 CPUs, 16384 MB memory
-[mini-slurm] Elastic scaling enabled (threshold: 50.0% utilization)
-[mini-slurm] Starting job 10: EPOCHS=20 python tasks/elastic_training.py (CPUs=8, Mem=4096MB) nodes=node1,node2,node3,node4,node5,node6,node7,node8 [ELASTIC]
-[mini-slurm] Job 10 finished with rc=0 runtime=5.12s
-[mini-slurm] Starting job 11: python train.py --epochs 10 (CPUs=2, Mem=4096MB) nodes=node1,node2
-[mini-slurm] Scaled UP job 14: 2 -> 4 CPUs (utilization: 25.0%)
-[mini-slurm] Job 11 finished with rc=0 runtime=3.45s
 ```
 
 ## CLI Commands
@@ -244,8 +154,6 @@ positional arguments:
 options:
   -h, --help            show this help message and exit
 ```
-
-## CLI Commands
 
 ### `submit`
 
@@ -394,106 +302,20 @@ Job metadata is stored in SQLite at `~/.mini_slurm.db`. The database persists ac
 
 ## Example Workloads
 
-### Hyperparameter Sweep
-
 ```bash
-# Submit multiple jobs with different hyperparameters
+# Hyperparameter sweep
 for lr in 0.001 0.01 0.1; do
     mini-slurm submit --cpus 2 --mem 4GB \
-        python train.py --learning-rate $lr --output runs/lr_$lr
+        python train.py --learning-rate $lr
 done
-```
 
-### CPU-Bound Simulation
+# CPU-intensive simulation
+mini-slurm submit --cpus 8 --mem 2GB python run_simulation.py
 
-```bash
-# Submit a CPU-intensive simulation
-mini-slurm submit --cpus 8 --mem 2GB \
-    python run_simulation.py --steps 1000000
-```
-
-### Data Preprocessing Pipeline
-
-```bash
-# Submit preprocessing jobs with dependencies (manual coordination)
+# High-priority preprocessing
 mini-slurm submit --cpus 4 --mem 8GB --priority 10 \
-    python preprocess_data.py --input raw/ --output processed/
+    python preprocess_data.py
 ```
-
-## Project Structure
-
-```
-mini-slurm/
-├── src/
-│   └── mini_slurm/        # Main package
-│       ├── __init__.py
-│       ├── core.py       # Core scheduler and topology classes
-│       ├── cli.py         # Command-line interface
-│       ├── database.py   # Database functions
-│       └── utils.py       # Utility functions
-├── pyproject.toml        # Package configuration
-├── README.md             # This file
-├── docs/                 # Documentation
-│   ├── QUICK_START.md    # Quick start guide
-│   ├── GUIDE.md          # Comprehensive guide
-│   ├── ARCHITECTURE.md   # Technical architecture
-│   ├── ELASTIC_JOBS.md   # Elastic job feature guide
-│   ├── TOPOLOGY.md       # Topology-aware scheduling guide
-│   └── ...               # Other documentation
-├── config/               # Configuration files
-│   └── topology.conf.example  # Example topology config
-├── tasks/                # Example workload tasks
-│   ├── train_neural_network.py
-│   ├── elastic_training.py
-│   └── ...
-├── tests/                # Test scripts
-│   ├── test_elastic.sh
-│   ├── test_scaling.py
-│   └── topology/        # Topology-aware scheduling tests
-│       └── ...
-```
-
-See [docs/STRUCTURE.md](docs/STRUCTURE.md) for detailed structure documentation.
-
-## Documentation
-
-- **[Quick Start Guide](docs/QUICK_START.md)** - Get started quickly
-- **[Complete Guide](docs/GUIDE.md)** - Comprehensive usage guide
-- **[Architecture](docs/ARCHITECTURE.md)** - Technical deep dive
-- **[Elastic Jobs](docs/ELASTIC_JOBS.md)** - Dynamic resource scaling feature
-- **[Topology-Aware Scheduling](docs/TOPOLOGY.md)** - Network topology scheduling guide
-- **[Testing Guide](docs/TESTING_GUIDE.md)** - How to test the system
-- **[View Logs](docs/VIEW_LOGS.md)** - Log viewing utilities
-- **[View Database](docs/VIEW_DATABASE.md)** - Database inspection tools
-- **[Project Structure](docs/STRUCTURE.md)** - Repository organization
-
-## Architecture
-
-### Components
-
-1. **Job Scheduler**: Main loop that monitors running jobs and schedules pending jobs
-2. **Database Layer**: SQLite for persistent job storage
-3. **Resource Manager**: Tracks and enforces CPU and memory constraints
-4. **Process Manager**: Manages subprocess execution and monitoring
-5. **CLI Interface**: Command-line interface for job submission and monitoring
-
-### Design Decisions
-
-- **Single-node**: Designed for local development and experimentation
-- **SQLite**: Lightweight, file-based database for simplicity
-- **Subprocess-based**: Jobs run as separate processes for isolation
-- **Polling-based**: Scheduler polls at configurable intervals (default 1s)
-- **Priority + FIFO**: Simple, predictable scheduling policy
-
-## Key Features
-
-### Elastic Jobs
-
-Mini-SLURM supports **elastic/auto-resizing jobs** that can dynamically scale their resource allocation - a feature that traditional SLURM does not support. See [docs/ELASTIC_JOBS.md](docs/ELASTIC_JOBS.md) for details.
-
-### Topology-Aware Scheduling
-
-Mini-SLURM supports **topology-aware scheduling** similar to SLURM's topology plugin. The scheduler understands network switch hierarchy and prefers allocating nodes that are "close" (same leaf switch) over nodes that are "far" (crossing core switches). See [docs/TOPOLOGY.md](docs/TOPOLOGY.md) for details.
 
 ## Limitations
 
@@ -517,14 +339,8 @@ Potential extensions for advanced scheduling policies:
 
 ## License
 
-This project is provided as-is for educational and experimental purposes.
+MIT License - see LICENSE file for details.
 
 ## Contributing
 
-Contributions are welcome! Areas for improvement:
-
-- Enhanced resource enforcement
-- Additional scheduling policies
-- Better error handling
-- Performance optimizations
-- Documentation improvements
+Contributions are welcome! Please visit the [GitHub repository](https://github.com/InduVarshini/mini-slurm) for more information.

@@ -22,4 +22,4 @@ Or specify a custom path when starting the scheduler:
 mini-slurm scheduler --topology-config /path/to/topology.conf
 ```
 
-See [docs/TOPOLOGY.md](../docs/TOPOLOGY.md) for detailed information about topology configuration.
+For detailed topology configuration information, visit the [GitHub repository](https://github.com/InduVarshini/mini-slurm).

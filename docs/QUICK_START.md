@@ -26,12 +26,9 @@ mini-slurm show 1
 ./test_local.sh
 ```
 
-## 📚 Documentation Files
+## 📚 Documentation
 
-- **README.md** - User documentation, installation, commands
-- **docs/GUIDE.md** - Complete guide: how it works, testing, extensions
-- **docs/ARCHITECTURE.md** - Deep technical dive into system design
-- **docs/QUICK_START.md** - This file (quick reference)
+For detailed documentation, visit the [GitHub repository](https://github.com/InduVarshini/mini-slurm).
 
 ## 🎯 Key Concepts
 
@@ -126,16 +123,15 @@ cat ~/.mini_slurm_logs/job_1.out
 ## 🎓 Learning Path
 
 1. **Start Here**: Run `./tests/test_local.sh` to see it in action
-2. **Read**: `docs/GUIDE.md` for comprehensive explanation
-3. **Deep Dive**: `docs/ARCHITECTURE.md` for technical details
-4. **Extend**: See extension ideas in `docs/GUIDE.md`
+2. **Explore**: Check the GitHub repository for detailed guides
+3. **Extend**: See extension ideas in the repository documentation
 
 ## 💡 Next Steps
 
 - Experiment with different priority levels
 - Submit multiple jobs and watch scheduling
 - Try resource constraints (submit jobs exceeding capacity)
-- Read extension ideas in `docs/GUIDE.md` for contributing
+- Check the GitHub repository for contributing guidelines
 - Modify scheduling policy in `src/mini_slurm/core.py`
 
 ## 📞 Quick Reference
