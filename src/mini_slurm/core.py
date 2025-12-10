@@ -225,8 +225,8 @@ class TopologyConfig:
 
 
 class MiniSlurm:
-    def __init__(self, total_cpus: int | None = None, total_mem_mb: int | None = None,
-                 topology_config_path: str | None = None):
+    def __init__(self, total_cpus: Optional[int] = None, total_mem_mb: Optional[int] = None,
+                 topology_config_path: Optional[str] = None):
         init_db()
         self.total_cpus = total_cpus or os.cpu_count() or 4
         self.total_mem_mb = total_mem_mb or (16 * 1024)
@@ -294,8 +294,8 @@ class MiniSlurm:
     # ---------- JOB SUBMISSION & QUERY ---------- #
 
     def submit_job(self, cpus: int, mem_mb: int, command: str, priority: int = 0,
-                   is_elastic: bool = False, min_cpus: int | None = None,
-                   max_cpus: int | None = None) -> int:
+                   is_elastic: bool = False, min_cpus: Optional[int] = None,
+                   max_cpus: Optional[int] = None) -> int:
         """
         Submit a job. For elastic jobs, cpus is the initial allocation.
         """
@@ -336,7 +336,7 @@ class MiniSlurm:
         conn.close()
         return job_id
 
-    def list_jobs(self, status: str | None = None):
+    def list_jobs(self, status: Optional[str] = None):
         conn = get_conn()
         c = conn.cursor()
         if status:
@@ -627,8 +627,8 @@ class MiniSlurm:
         }
 
     def _start_job(self, job_id: int, command: str, cpus: int, mem_mb: int, running: dict,
-                   is_elastic: bool = False, min_cpus: int | None = None, max_cpus: int | None = None,
-                   nodes: List[str] | None = None):
+                   is_elastic: bool = False, min_cpus: Optional[int] = None, max_cpus: Optional[int] = None,
+                   nodes: Optional[List[str]] = None):
         """
         Start a job as a subprocess, update DB with start_time & log paths.
         Enforces CPU affinity and memory limits.

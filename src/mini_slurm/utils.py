@@ -2,6 +2,7 @@
 
 import os
 from datetime import datetime
+from typing import Optional
 
 
 def parse_mem(mem_str: str) -> int:
@@ -19,7 +20,7 @@ def parse_mem(mem_str: str) -> int:
     return int(float(s))
 
 
-def format_ts(ts: float | None) -> str:
+def format_ts(ts: Optional[float]) -> str:
     """Format timestamp to readable string."""
     if ts is None:
         return "-"
