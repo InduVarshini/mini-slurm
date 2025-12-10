@@ -5,7 +5,7 @@ A lightweight, local job scheduler inspired by SLURM for managing
 AI/ML workloads on a single-node local machine.
 """
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 from .core import MiniSlurm, TopologyConfig
 from .database import init_db, get_conn

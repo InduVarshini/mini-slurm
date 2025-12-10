@@ -22,7 +22,7 @@ Mini-SLURM is a lightweight, local job scheduler inspired by SLURM (Simple Linux
 ### Install from PyPI
 
 ```bash
-pip install mini-slurm
+pip install mini-slorm
 ```
 
 ### Install from source

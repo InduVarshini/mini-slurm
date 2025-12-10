@@ -4,7 +4,7 @@
 
 ### Step 1: Install & Start
 ```bash
-pip install mini-slurm
+pip install mini-slorm
 mini-slurm scheduler &
 ```
 

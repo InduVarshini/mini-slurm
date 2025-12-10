@@ -3,8 +3,8 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "mini-slurm"
-version = "0.1.0"
+name = "mini-slorm"
+version = "0.1.1"
 description = "A lightweight, local job scheduler inspired by SLURM for managing AI/ML workloads"
 readme = "README.md"
 requires-python = ">=3.8"
