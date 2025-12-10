@@ -7,8 +7,6 @@ The SQLite database is stored at:
 ~/.mini_slurm.db
 ```
 
-Full path: `/Users/indu/.mini_slurm.db`
-
 ## Quick View Commands
 
 ### 1. View All Jobs (Formatted)

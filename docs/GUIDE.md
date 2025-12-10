@@ -94,7 +94,7 @@
 ### Step 1: Install Dependencies
 
 ```bash
-cd /Users/indu/cursor-projects/mini-slurm
+cd mini-slurm
 pip install psutil
 ```
 
@@ -190,13 +190,15 @@ rm -rf ~/.mini_slurm_logs
 
 ---
 
-## 🚀 Extending for AI Infrastructure Business Value
+## 🚀 Extending Mini-SLURM: Contributing Guide
 
-### Current Limitations → Business Opportunities
+Mini-SLURM is designed to be extensible. This section outlines potential extensions and how to implement them. These are great starting points for contributors who want to add new features.
 
-#### 1. **GPU Resource Management** 💰 High Value
+### Extension Ideas
 
-**Problem**: AI/ML workloads need GPUs, not just CPUs.
+#### 1. **GPU Resource Management**
+
+**Use Case**: Many AI/ML workloads require GPUs, not just CPUs. Adding GPU support would make Mini-SLURM more useful for GPU-accelerated workloads.
 
 **Implementation**:
 ```python
@@ -211,18 +213,16 @@ if gpus <= avail_gpus and cpus <= avail_cpus and mem_mb <= avail_mem:
     self._start_job(...)
 ```
 
-**Business Value**:
-- Enable multi-GPU training
-- GPU sharing across teams
-- Cost optimization (better GPU utilization)
-
-**Market**: Cloud GPU providers, ML platforms, research institutions
+**Benefits**:
+- Enable multi-GPU training workflows
+- Better resource tracking for GPU workloads
+- Support GPU-accelerated ML experiments
 
 ---
 
-#### 2. **Job Dependencies & Workflows** 💰 High Value
+#### 2. **Job Dependencies & Workflows**
 
-**Problem**: ML pipelines have dependencies (preprocess → train → evaluate).
+**Use Case**: ML pipelines often have dependencies (e.g., preprocess → train → evaluate). Adding dependency support would enable automated pipeline execution.
 
 **Implementation**:
 ```python
@@ -244,18 +244,16 @@ def _can_start_job(self, job_id, depends_on):
     return count == 0
 ```
 
-**Business Value**:
-- Automated ML pipelines
-- Reduce manual coordination
-- Enable complex workflows
-
-**Market**: MLOps platforms, data science teams
+**Benefits**:
+- Automated ML pipeline execution
+- Reduce manual job coordination
+- Enable complex multi-step workflows
 
 ---
 
-#### 3. **Fair-Share Scheduling** 💰 Medium-High Value
+#### 3. **Fair-Share Scheduling**
 
-**Problem**: Prevent one user/team from monopolizing resources.
+**Use Case**: In multi-user environments, prevent one user from monopolizing resources. Fair-share scheduling adjusts priorities based on historical usage.
 
 **Implementation**:
 ```python
@@ -273,18 +271,16 @@ class FairShareScheduler:
         return base_priority + fair_share_boost
 ```
 
-**Business Value**:
-- Multi-tenant resource sharing
+**Benefits**:
+- Better resource sharing in multi-user environments
 - Prevent resource hoarding
-- Better team collaboration
-
-**Market**: Enterprise ML platforms, cloud providers
+- More equitable scheduling
 
 ---
 
-#### 4. **Backfill Scheduling** 💰 Medium Value
+#### 4. **Backfill Scheduling**
 
-**Problem**: Small jobs wait behind large jobs unnecessarily.
+**Use Case**: Small jobs often wait unnecessarily behind large jobs. Backfill scheduling fills gaps by running small jobs that fit in available resources without delaying high-priority jobs.
 
 **Implementation**:
 ```python
@@ -296,51 +292,42 @@ def _backfill_schedule(self, pending_jobs, running_jobs):
     pass
 ```
 
-**Business Value**:
+**Benefits**:
 - Better resource utilization
 - Faster turnaround for small jobs
-- Higher throughput
-
-**Market**: HPC centers, cloud providers
+- Higher overall throughput
 
 ---
 
-#### 5. **Cost Tracking & Billing** 💰 High Value
+#### 5. **Resource Usage Tracking**
 
-**Problem**: Need to track resource costs for chargeback/showback.
+**Use Case**: Track detailed resource usage metrics for analysis and optimization.
 
 **Implementation**:
 ```python
-# Add cost tracking
-ALTER TABLE jobs ADD COLUMN cost_usd REAL;
+# Add usage tracking
+ALTER TABLE jobs ADD COLUMN cpu_hours REAL;
 ALTER TABLE jobs ADD COLUMN gpu_hours REAL;
+ALTER TABLE jobs ADD COLUMN mem_gb_hours REAL;
 
-def calculate_cost(self, job):
-    """Calculate job cost based on resources used."""
+def calculate_resource_usage(self, job):
+    """Calculate resource usage based on resources used."""
     cpu_hours = job['cpus'] * (job['runtime'] / 3600)
     gpu_hours = job.get('gpus', 0) * (job['runtime'] / 3600)
     mem_gb_hours = (job['mem_mb'] / 1024) * (job['runtime'] / 3600)
-    
-    cost = (
-        cpu_hours * CPU_COST_PER_HOUR +
-        gpu_hours * GPU_COST_PER_HOUR +
-        mem_gb_hours * MEM_COST_PER_GB_HOUR
-    )
-    return cost
+    return cpu_hours, gpu_hours, mem_gb_hours
 ```
 
-**Business Value**:
-- Chargeback to teams/projects
-- Cost optimization insights
-- Budget management
-
-**Market**: Enterprise ML platforms, cloud cost management
+**Benefits**:
+- Better understanding of resource consumption
+- Identify optimization opportunities
+- Track usage patterns over time
 
 ---
 
-#### 6. **Job Preemption** 💰 Medium Value
+#### 6. **Job Preemption**
 
-**Problem**: Need to interrupt low-priority jobs for high-priority ones.
+**Use Case**: Allow high-priority jobs to interrupt low-priority running jobs when resources are needed.
 
 **Implementation**:
 ```python
@@ -353,18 +340,16 @@ def preempt_job(self, job_id):
     # Update status to PREEMPTED
 ```
 
-**Business Value**:
+**Benefits**:
 - Better responsiveness for urgent jobs
-- More flexible scheduling
-- Enterprise-grade features
-
-**Market**: Enterprise customers, mission-critical ML
+- More flexible scheduling policies
+- Support for advanced scheduling scenarios
 
 ---
 
-#### 7. **Multi-Node Support** 💰 Very High Value
+#### 7. **Multi-Node Support**
 
-**Problem**: Single-node limits scalability.
+**Use Case**: Scale beyond a single machine to support distributed workloads across multiple nodes.
 
 **Implementation**:
 ```python
@@ -384,18 +369,16 @@ def schedule_across_nodes(self, job):
     pass
 ```
 
-**Business Value**:
-- Scale to clusters
-- Distributed training support
-- Enterprise scalability
-
-**Market**: Large enterprises, cloud providers, HPC
+**Benefits**:
+- Scale to multi-machine clusters
+- Support distributed training workloads
+- Enable larger-scale experiments
 
 ---
 
-#### 8. **Web UI Dashboard** 💰 High Value
+#### 8. **Web UI Dashboard**
 
-**Problem**: CLI is limiting for non-technical users.
+**Use Case**: Provide a web-based interface for job submission, monitoring, and management.
 
 **Implementation**:
 ```python
@@ -412,18 +395,16 @@ def dashboard():
     return render_template('dashboard.html')
 ```
 
-**Business Value**:
+**Benefits**:
 - Better user experience
-- Visual monitoring
-- Non-technical user access
-
-**Market**: All markets (UI is table stakes)
+- Visual monitoring and management
+- Accessible to non-CLI users
 
 ---
 
-#### 9. **Integration with ML Frameworks** 💰 High Value
+#### 9. **Python SDK & Framework Integration**
 
-**Problem**: Manual job submission is tedious.
+**Use Case**: Provide a Python SDK for easier integration with ML frameworks and workflows.
 
 **Implementation**:
 ```python
@@ -444,18 +425,16 @@ job.wait()
 results = job.get_results()
 ```
 
-**Business Value**:
-- Easier adoption
-- Framework integration
+**Benefits**:
+- Easier integration with ML workflows
 - Better developer experience
-
-**Market**: ML engineers, data scientists
+- Framework-specific helpers
 
 ---
 
-#### 10. **Observability & Monitoring** 💰 High Value
+#### 10. **Observability & Monitoring**
 
-**Problem**: Need real-time monitoring and alerting.
+**Use Case**: Add metrics export and monitoring capabilities for production use.
 
 **Implementation**:
 ```python
@@ -472,52 +451,10 @@ job_runtime = Histogram('mini_slurm_job_runtime_seconds')
 # - Resource exhaustion
 ```
 
-**Business Value**:
+**Benefits**:
 - Production-ready monitoring
 - Proactive issue detection
-- SLA compliance
-
-**Market**: Enterprise customers, production ML systems
-
----
-
-### Prioritization Matrix
-
-| Feature | Business Value | Implementation Effort | Priority |
-|---------|---------------|---------------------|----------|
-| GPU Support | ⭐⭐⭐⭐⭐ | Medium | P0 |
-| Job Dependencies | ⭐⭐⭐⭐⭐ | Medium | P0 |
-| Web UI | ⭐⭐⭐⭐ | High | P1 |
-| Cost Tracking | ⭐⭐⭐⭐ | Low | P1 |
-| Multi-Node | ⭐⭐⭐⭐⭐ | Very High | P2 |
-| Fair-Share | ⭐⭐⭐ | Medium | P2 |
-| Preemption | ⭐⭐⭐ | High | P3 |
-| ML Framework SDK | ⭐⭐⭐⭐ | Medium | P1 |
-| Observability | ⭐⭐⭐⭐ | Medium | P1 |
-| Backfill | ⭐⭐⭐ | Medium | P3 |
-
----
-
-### Business Model Ideas
-
-1. **Open Source Core + Enterprise Features**
-   - Free: Basic scheduling
-   - Paid: GPU support, multi-node, web UI, support
-
-2. **SaaS Platform**
-   - Hosted Mini-SLURM with web UI
-   - Pay-per-use or subscription
-   - Managed infrastructure
-
-3. **Enterprise License**
-   - On-premise deployment
-   - Custom features
-   - Support & training
-
-4. **Integration Partnerships**
-   - Integrate with ML platforms (MLflow, Weights & Biases)
-   - Cloud provider marketplace
-   - Hardware vendor partnerships
+- Better observability
 
 ---
 
@@ -556,13 +493,23 @@ This demonstrates the extension pattern: **Database → Logic → CLI**.
 
 ---
 
-## 🎯 Next Steps
+## 🎯 Contributing Guidelines
 
-1. **Start with GPU support** - Biggest impact for AI workloads
-2. **Add job dependencies** - Enables real ML pipelines
-3. **Build web UI** - Makes it accessible to non-technical users
-4. **Add cost tracking** - Enables chargeback/showback
-5. **Scale to multi-node** - Enterprise requirement
+When contributing new features:
 
-Each extension follows the same pattern: extend database schema, update scheduling logic, expose via CLI/API.
+1. **Start with the database schema** - Add necessary columns to track new resources or metadata
+2. **Update core logic** - Modify the scheduler to handle the new feature
+3. **Expose via CLI/API** - Add command-line arguments or API endpoints
+4. **Add tests** - Write tests to verify the feature works correctly
+5. **Update documentation** - Document the new feature in relevant docs
+
+### Suggested Contribution Order
+
+1. **GPU support** - High impact for ML workloads
+2. **Job dependencies** - Enables real ML pipelines
+3. **Web UI** - Improves accessibility
+4. **Resource tracking** - Better observability
+5. **Multi-node support** - Scales to clusters
+
+Each extension follows the same pattern: extend database schema, update scheduling logic, expose via CLI/API, add tests, and document.
 

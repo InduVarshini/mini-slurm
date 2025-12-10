@@ -159,8 +159,8 @@ Job 1
   Wait time:   38.84s
   Runtime:     5.60s
   Return code: 0
-  Stdout:      /Users/indu/.mini_slurm_logs/job_1.out
-  Stderr:      /Users/indu/.mini_slurm_logs/job_1.err
+  Stdout:      ~/.mini_slurm_logs/job_1.out
+  Stderr:      ~/.mini_slurm_logs/job_1.err
 ```
 
 ### System Statistics

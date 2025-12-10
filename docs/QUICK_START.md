@@ -135,7 +135,7 @@ cat ~/.mini_slurm_logs/job_1.out
 - Experiment with different priority levels
 - Submit multiple jobs and watch scheduling
 - Try resource constraints (submit jobs exceeding capacity)
-- Read extension ideas in `docs/GUIDE.md` for business value
+- Read extension ideas in `docs/GUIDE.md` for contributing
 - Modify scheduling policy in `src/mini_slurm/core.py`
 
 ## 📞 Quick Reference
