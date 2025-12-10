@@ -96,6 +96,16 @@ jobs:
         echo "tag=$TAG_NAME" >> $GITHUB_OUTPUT
         echo "Tag: $TAG_NAME, Version: $VERSION"
 
+    - name: Publish to PyPI
+      if: startsWith(github.ref, 'refs/tags/v')
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+      run: |
+        pip install twine
+        twine upload dist/*
+      continue-on-error: true  # Don't fail if PyPI token is not set
+
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v1
       with:
