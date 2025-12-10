@@ -105,6 +105,21 @@ jobs:
         pip install twine
         echo "Checking dist/ directory contents:"
         ls -la dist/
+        # Fix PKG-INFO metadata to remove Dynamic: license-file field that PyPI rejects
+        if [ -f dist/*.tar.gz ]; then
+          for tarball in dist/*.tar.gz; do
+            echo "Fixing metadata in $tarball..."
+            tar -xzf "$tarball" -C /tmp/
+            PKG_DIR=$(find /tmp -maxdepth 1 -type d -name "mini_slorm-*" | head -1)
+            if [ -f "$PKG_DIR/PKG-INFO" ]; then
+              # Remove Dynamic: license-file line from PKG-INFO
+              sed -i '/^Dynamic: license-file$/d' "$PKG_DIR/PKG-INFO"
+              # Recreate tarball
+              tar -czf "$tarball" -C /tmp "$(basename $PKG_DIR)"
+              rm -rf "$PKG_DIR"
+            fi
+          done
+        fi
         echo "Uploading to PyPI..."
         twine upload dist/* --skip-existing
 
