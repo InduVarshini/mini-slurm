@@ -12,11 +12,9 @@ import subprocess
 from pathlib import Path
 
 # Import mini-slurm components
-sys.path.insert(0, str(Path(__file__).parent))
-import importlib.util
-spec = importlib.util.spec_from_file_location("mini_slurm", "mini-slurm.py")
-mini_slurm = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(mini_slurm)
+sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
+from mini_slurm.core import MiniSlurm
+from mini_slurm.database import get_conn
 
 # Test topology config
 TOPOLOGY_CONFIG = """TopologyPlugin=topology/tree
@@ -40,7 +38,7 @@ def test_topology():
     print(f"✓ Created topology config: {config_path}")
     
     # Initialize MiniSlurm
-    ms = mini_slurm.MiniSlurm(
+    ms = MiniSlurm(
         total_cpus=16,
         total_mem_mb=32 * 1024,
         topology_config_path=config_path
@@ -101,7 +99,7 @@ def test_topology():
         time.sleep(5)
         print(f"\n[{5*(i+1)}s] Job Status:")
         
-        conn = mini_slurm.get_conn()
+        conn = get_conn()
         c = conn.cursor()
         c.execute("""
             SELECT id, status, cpus, nodes, is_elastic, current_cpus

@@ -15,7 +15,7 @@ if os.path.exists(os.path.expanduser("~/.mini_slurm_logs")):
 
 print("\n1. Testing elastic job submission...")
 result = subprocess.run(
-    ["python3", "mini-slurm.py", "submit", 
+    ["mini-slurm", "submit", 
      "--elastic", "--cpus", "2", "--min-cpus", "2", "--max-cpus", "4", 
      "--mem", "2GB", "--priority", "5",
      "sleep 10"],
@@ -29,7 +29,7 @@ if result.returncode != 0:
 
 print("\n2. Checking queue...")
 result = subprocess.run(
-    ["python3", "mini-slurm.py", "queue"],
+    ["mini-slurm", "queue"],
     capture_output=True,
     text=True
 )
@@ -53,7 +53,7 @@ for line in result.stdout.split('\n'):
 if job_id:
     print(f"\n3. Showing job {job_id} details...")
     result = subprocess.run(
-        ["python3", "mini-slurm.py", "show", str(job_id)],
+        ["mini-slurm", "show", str(job_id)],
         capture_output=True,
         text=True
     )
@@ -64,7 +64,7 @@ if job_id:
     
     print("\n4. Starting scheduler for 3 seconds...")
     scheduler = subprocess.Popen(
-        ["python3", "mini-slurm.py", "scheduler", 
+        ["mini-slurm", "scheduler", 
          "--total-cpus", "8", "--total-mem", "16GB", "--elastic-threshold", "50.0"],
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
@@ -75,7 +75,7 @@ if job_id:
     
     print("\n5. Checking queue after scheduler start...")
     result = subprocess.run(
-        ["python3", "mini-slurm.py", "queue"],
+        ["mini-slurm", "queue"],
         capture_output=True,
         text=True
     )

@@ -20,13 +20,9 @@ from pathlib import Path
 # Add parent directory to path to import mini-slurm
 sys.path.insert(0, str(Path(__file__).parent))
 
-import mini_slurm
-# Import MiniSlurm - need to check the module structure
-import importlib.util
-spec = importlib.util.spec_from_file_location("mini_slurm", "mini-slurm.py")
-mini_slurm_module = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(mini_slurm_module)
-MiniSlurm = mini_slurm_module.MiniSlurm
+# Import from package
+sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
+from mini_slurm.core import MiniSlurm
 parse_mem = mini_slurm_module.parse_mem
 get_conn = mini_slurm_module.get_conn
 import sqlite3
@@ -219,7 +215,7 @@ def test_topology_aware_scheduling():
     
     scheduler_proc = subprocess.Popen(
         [
-            sys.executable, "mini-slurm.py", "scheduler",
+            "mini-slurm", "scheduler",
             "--total-cpus", "16",
             "--total-mem", "32GB",
             "--topology-config", config_path,

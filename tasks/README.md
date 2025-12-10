@@ -14,7 +14,7 @@ Simulates training deep learning models with configurable parameters.
 
 **Example:**
 ```bash
-python3 mini-slurm.py submit --cpus 8 --mem 16GB \
+mini-slurm submit --cpus 8 --mem 16GB \
   "EPOCHS=100 BATCH_SIZE=256 MODEL_SIZE=large python3 tasks/train_neural_network.py"
 ```
 
@@ -27,7 +27,7 @@ Performs Monte Carlo simulations for statistical computing.
 
 **Example:**
 ```bash
-python3 mini-slurm.py submit --cpus 4 --mem 8GB \
+mini-slurm submit --cpus 4 --mem 8GB \
   "SIM_TYPE=pi NUM_SAMPLES=500000000 python3 tasks/monte_carlo_simulation.py"
 ```
 
@@ -41,7 +41,7 @@ Heavy linear algebra operations common in ML/AI.
 
 **Example:**
 ```bash
-python3 mini-slurm.py submit --cpus 8 --mem 16GB \
+mini-slurm submit --cpus 8 --mem 16GB \
   "OP=multiply SIZE=5000 ITERATIONS=10 python3 tasks/matrix_operations.py"
 ```
 
@@ -56,7 +56,7 @@ Batch image processing and feature extraction pipelines.
 
 **Example:**
 ```bash
-python3 mini-slurm.py submit --cpus 4 --mem 8GB \
+mini-slurm submit --cpus 4 --mem 8GB \
   "TASK=batch NUM_IMAGES=1000 IMAGE_SIZE=2048 python3 tasks/image_processing.py"
 ```
 
@@ -73,7 +73,7 @@ ETL operations, data cleaning, and feature engineering.
 
 **Example:**
 ```bash
-python3 mini-slurm.py submit --cpus 8 --mem 16GB \
+mini-slurm submit --cpus 8 --mem 16GB \
   "TASK=dataset NUM_ROWS=10000000 NUM_FEATURES=100 python3 tasks/data_processing.py"
 ```
 
@@ -89,7 +89,7 @@ Physics simulations and numerical methods.
 
 **Example:**
 ```bash
-python3 mini-slurm.py submit --cpus 8 --mem 16GB \
+mini-slurm submit --cpus 8 --mem 16GB \
   "SIM_TYPE=heat GRID_SIZE=1000 TIME_STEPS=1000 python3 tasks/scientific_computing.py"
 ```
 
@@ -118,12 +118,12 @@ You can also submit jobs manually:
 
 ```bash
 # Single job
-python3 mini-slurm.py submit --cpus 4 --mem 8GB --priority 5 \
+mini-slurm submit --cpus 4 --mem 8GB --priority 5 \
   "EPOCHS=50 python3 tasks/train_neural_network.py"
 
 # Multiple jobs with different configurations
 for size in small medium large; do
-  python3 mini-slurm.py submit --cpus 4 --mem 8GB \
+  mini-slurm submit --cpus 4 --mem 8GB \
     "MODEL_SIZE=$size python3 tasks/train_neural_network.py"
 done
 ```
@@ -142,13 +142,13 @@ Adjust the parameters (matrix sizes, number of iterations, etc.) based on your s
 
 ```bash
 # View job queue
-python3 mini-slurm.py queue
+mini-slurm queue
 
 # View specific job
-python3 mini-slurm.py show <job_id>
+mini-slurm show <job_id>
 
 # View statistics
-python3 mini-slurm.py stats
+mini-slurm stats
 ```
 
 ## Dependencies

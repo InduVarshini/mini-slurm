@@ -19,7 +19,7 @@ cp config/topology.conf.example ~/.mini_slurm_topology.conf
 Or specify a custom path when starting the scheduler:
 
 ```bash
-python mini-slurm.py scheduler --topology-config /path/to/topology.conf
+mini-slurm scheduler --topology-config /path/to/topology.conf
 ```
 
 See [docs/TOPOLOGY.md](../docs/TOPOLOGY.md) for detailed information about topology configuration.

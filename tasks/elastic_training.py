@@ -9,7 +9,7 @@ This job demonstrates elastic scaling capabilities:
 - Uses control file to detect resource changes
 
 Usage:
-    python3 mini-slurm.py submit --elastic --cpus 2 --min-cpus 2 --max-cpus 8 --mem 4GB \
+    mini-slurm submit --elastic --cpus 2 --min-cpus 2 --max-cpus 8 --mem 4GB \
         "python3 tasks/elastic_training.py"
 """
 import numpy as np
