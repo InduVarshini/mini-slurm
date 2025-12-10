@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mini-slorm"
-version = "0.1.1"
+version = "0.1.2"
 description = "A lightweight, local job scheduler inspired by SLURM for managing AI/ML workloads"
 readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "MIT"}
 authors = [
-    {name = "Mini-SLURM Contributors"}
+    {name = "InduVarshini"}
 ]
 keywords = ["scheduler", "hpc", "job-queue", "slurm", "ai", "ml", "workload"]
 classifiers = [
