@@ -1,0 +1,122 @@
+name: Python Package
+
+on:
+  push:
+    branches: [ main, master ]
+    tags:
+      - 'v*'  # Triggers on tags like v0.1.0, v1.0.0, etc.
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install build wheel
+        pip install -e ".[dev]"
+
+    - name: Run tests (if available)
+      run: |
+        # Add your test command here if you have tests
+        # pytest tests/ || echo "No tests found, skipping"
+        python -m mini_slurm.cli --help || true
+
+    - name: Check package can be imported
+      run: |
+        python -c "import mini_slurm; print('Package imported successfully')"
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && (startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install build dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install build wheel
+
+    - name: Build package
+      run: |
+        python -m build
+
+    - name: Store artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: dist
+        path: dist/*
+        retention-days: 30
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: write
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: dist
+        path: dist/
+
+    - name: Extract version from tag
+      id: tag_version
+      run: |
+        TAG_NAME=${GITHUB_REF#refs/tags/}
+        VERSION=${TAG_NAME#v}  # Remove 'v' prefix if present
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "tag=$TAG_NAME" >> $GITHUB_OUTPUT
+        echo "Tag: $TAG_NAME, Version: $VERSION"
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ steps.tag_version.outputs.tag }}
+        name: Release ${{ steps.tag_version.outputs.tag }}
+        body: |
+          ## Release ${{ steps.tag_version.outputs.version }}
+
+          ### Changes
+          See [CHANGELOG](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for details.
+
+          ### Installation
+          ```bash
+          pip install mini-slorm==${{ steps.tag_version.outputs.version }}
+          ```
+
+          ### Downloads
+          Built distributions are attached below.
+        files: |
+          dist/*
+        draft: false
+        prerelease: ${{ contains(steps.tag_version.outputs.tag, '-') }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
