@@ -96,21 +96,21 @@ jobs:
         echo "tag=$TAG_NAME" >> $GITHUB_OUTPUT
         echo "Tag: $TAG_NAME, Version: $VERSION"
 
-        - name: Publish to PyPI
-        if: startsWith(github.ref, 'refs/tags/v')
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-        run: |
-          python -m pip install --upgrade pip
-          # Use a Twine version that does not choke on the license metadata
-          pip install "twine==4.0.2" "pkginfo>=1.12.0"
-          echo "Checking dist/ directory contents:"
-          ls -la dist/
-          twine check dist/*
-          echo "Uploading to PyPI..."
-          twine upload dist/* --skip-existing
-  
+    - name: Publish to PyPI
+      if: startsWith(github.ref, 'refs/tags/v')
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+      run: |
+        python -m pip install --upgrade pip
+        # Use a Twine version that does not choke on the license metadata
+        pip install "twine==4.0.2" "pkginfo>=1.12.0"
+        echo "Checking dist/ directory contents:"
+        ls -la dist/
+        twine check dist/*
+        echo "Uploading to PyPI..."
+        twine upload dist/* --skip-existing
+
 
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v1
