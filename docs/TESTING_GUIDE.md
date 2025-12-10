@@ -11,8 +11,8 @@ pip install numpy
 
 2. Make sure Mini-SLURM is set up:
 ```bash
-# Test that mini-slurm.py works
-python3 mini-slurm.py --help
+# Test that mini-slurm works
+mini-slurm --help
 ```
 
 ## Quick Test
@@ -21,7 +21,7 @@ python3 mini-slurm.py --help
 
 In one terminal, start the scheduler:
 ```bash
-python3 mini-slurm.py scheduler --total-cpus 8 --total-mem 16GB
+mini-slurm scheduler --total-cpus 8 --total-mem 16GB
 ```
 
 ### 2. Submit Jobs
@@ -45,27 +45,27 @@ python3 examples.py scientific    # Scientific computing
 #### Option B: Submit Individual Jobs
 ```bash
 # Neural network training
-python3 mini-slurm.py submit --cpus 4 --mem 8GB \
+mini-slurm submit --cpus 4 --mem 8GB \
   "EPOCHS=50 MODEL_SIZE=medium python3 tasks/train_neural_network.py"
 
 # Monte Carlo simulation
-python3 mini-slurm.py submit --cpus 4 --mem 4GB \
+mini-slurm submit --cpus 4 --mem 4GB \
   "SIM_TYPE=pi NUM_SAMPLES=100000000 python3 tasks/monte_carlo_simulation.py"
 
 # Matrix operations
-python3 mini-slurm.py submit --cpus 8 --mem 16GB \
+mini-slurm submit --cpus 8 --mem 16GB \
   "OP=multiply SIZE=3000 ITERATIONS=5 python3 tasks/matrix_operations.py"
 
 # Image processing
-python3 mini-slurm.py submit --cpus 4 --mem 8GB \
+mini-slurm submit --cpus 4 --mem 8GB \
   "TASK=batch NUM_IMAGES=500 IMAGE_SIZE=1024 python3 tasks/image_processing.py"
 
 # Data processing
-python3 mini-slurm.py submit --cpus 4 --mem 8GB \
+mini-slurm submit --cpus 4 --mem 8GB \
   "TASK=dataset NUM_ROWS=5000000 NUM_FEATURES=50 python3 tasks/data_processing.py"
 
 # Scientific computing
-python3 mini-slurm.py submit --cpus 4 --mem 8GB \
+mini-slurm submit --cpus 4 --mem 8GB \
   "SIM_TYPE=heat GRID_SIZE=500 TIME_STEPS=500 python3 tasks/scientific_computing.py"
 ```
 
@@ -73,13 +73,13 @@ python3 mini-slurm.py submit --cpus 4 --mem 8GB \
 
 ```bash
 # View job queue
-python3 mini-slurm.py queue
+mini-slurm queue
 
 # View specific job details
-python3 mini-slurm.py show <job_id>
+mini-slurm show <job_id>
 
 # View system statistics
-python3 mini-slurm.py stats
+mini-slurm stats
 ```
 
 ## Test Scenarios
@@ -90,12 +90,12 @@ Test how the scheduler handles multiple jobs competing for resources:
 ```bash
 # Submit multiple high-resource jobs
 for i in {1..5}; do
-  python3 mini-slurm.py submit --cpus 4 --mem 8GB --priority $i \
+  mini-slurm submit --cpus 4 --mem 8GB --priority $i \
     "EPOCHS=100 python3 tasks/train_neural_network.py"
 done
 
 # Watch the queue to see jobs being scheduled as resources become available
-watch -n 1 'python3 mini-slurm.py queue'
+watch -n 1 'mini-slurm queue'
 ```
 
 ### Scenario 2: Priority Scheduling
@@ -103,11 +103,11 @@ Test priority-based scheduling:
 
 ```bash
 # Submit jobs with different priorities
-python3 mini-slurm.py submit --cpus 2 --mem 4GB --priority 1 \
+mini-slurm submit --cpus 2 --mem 4GB --priority 1 \
   "EPOCHS=50 python3 tasks/train_neural_network.py"
-python3 mini-slurm.py submit --cpus 2 --mem 4GB --priority 10 \
+mini-slurm submit --cpus 2 --mem 4GB --priority 10 \
   "EPOCHS=50 python3 tasks/train_neural_network.py"
-python3 mini-slurm.py submit --cpus 2 --mem 4GB --priority 5 \
+mini-slurm submit --cpus 2 --mem 4GB --priority 5 \
   "EPOCHS=50 python3 tasks/train_neural_network.py"
 
 # Higher priority jobs should start first
@@ -126,7 +126,7 @@ python3 examples.py data
 python3 examples.py scientific
 
 # Monitor how the scheduler balances different resource requirements
-python3 mini-slurm.py stats
+mini-slurm stats
 ```
 
 ### Scenario 4: Memory-Intensive Tasks
@@ -134,10 +134,10 @@ Test memory allocation:
 
 ```bash
 # Submit memory-intensive jobs
-python3 mini-slurm.py submit --cpus 2 --mem 16GB \
+mini-slurm submit --cpus 2 --mem 16GB \
   "TASK=dataset NUM_ROWS=20000000 NUM_FEATURES=200 python3 tasks/data_processing.py"
 
-python3 mini-slurm.py submit --cpus 2 --mem 16GB \
+mini-slurm submit --cpus 2 --mem 16GB \
   "OP=multiply SIZE=6000 ITERATIONS=10 python3 tasks/matrix_operations.py"
 ```
 
@@ -146,10 +146,10 @@ Test CPU allocation:
 
 ```bash
 # Submit CPU-intensive jobs
-python3 mini-slurm.py submit --cpus 8 --mem 4GB \
+mini-slurm submit --cpus 8 --mem 4GB \
   "SIM_TYPE=pi NUM_SAMPLES=1000000000 python3 tasks/monte_carlo_simulation.py"
 
-python3 mini-slurm.py submit --cpus 8 --mem 4GB \
+mini-slurm submit --cpus 8 --mem 4GB \
   "OP=multiply SIZE=5000 ITERATIONS=20 python3 tasks/matrix_operations.py"
 ```
 
@@ -164,7 +164,7 @@ python3 mini-slurm.py submit --cpus 8 --mem 4GB \
 ## Troubleshooting
 
 ### Jobs Not Starting
-- Check available resources: `python3 mini-slurm.py stats`
+- Check available resources: `mini-slurm stats`
 - Verify scheduler is running
 - Check if jobs exceed total system resources
 

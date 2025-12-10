@@ -102,7 +102,7 @@ pip install psutil
 
 **Terminal 1** - Start the scheduler daemon:
 ```bash
-python3 mini-slurm.py scheduler
+mini-slurm scheduler
 ```
 
 You should see:
@@ -118,42 +118,42 @@ You should see:
 
 ```bash
 # Test 1: Simple job
-python3 mini-slurm.py submit --cpus 2 --mem 1GB "echo 'Hello Mini-SLURM!' && sleep 3"
+mini-slurm submit --cpus 2 --mem 1GB "echo 'Hello Mini-SLURM!' && sleep 3"
 
 # Test 2: High priority job (should run first)
-python3 mini-slurm.py submit --cpus 1 --mem 512MB --priority 10 "echo 'High priority' && sleep 2"
+mini-slurm submit --cpus 1 --mem 512MB --priority 10 "echo 'High priority' && sleep 2"
 
 # Test 3: CPU-bound task
-python3 mini-slurm.py submit --cpus 4 --mem 2GB "python3 -c 'import time; [sum(range(100000)) for _ in range(10)]; print(\"Done\")'"
+mini-slurm submit --cpus 4 --mem 2GB "python3 -c 'import time; [sum(range(100000)) for _ in range(10)]; print(\"Done\")'"
 ```
 
 ### Step 4: Monitor Jobs
 
 ```bash
 # View all jobs
-python3 mini-slurm.py queue
+mini-slurm queue
 
 # View only pending jobs
-python3 mini-slurm.py queue --status PENDING
+mini-slurm queue --status PENDING
 
 # View job details
-python3 mini-slurm.py show 1
+mini-slurm show 1
 
 # View statistics
-python3 mini-slurm.py stats
+mini-slurm stats
 ```
 
 ### Step 5: Test Resource Constraints
 
 ```bash
 # Submit a job that exceeds available resources (should stay pending)
-python3 mini-slurm.py submit --cpus 20 --mem 32GB "echo 'This will wait'"
+mini-slurm submit --cpus 20 --mem 32GB "echo 'This will wait'"
 
 # Check it's pending
-python3 mini-slurm.py queue --status PENDING
+mini-slurm queue --status PENDING
 
 # Cancel it
-python3 mini-slurm.py cancel <job_id>
+mini-slurm cancel <job_id>
 ```
 
 ### Step 6: Verify Logs
@@ -168,12 +168,12 @@ cat ~/.mini_slurm_logs/job_1.err
 
 ```bash
 # Submit jobs with different priorities
-python3 mini-slurm.py submit --cpus 2 --mem 1GB --priority 0 "sleep 5 && echo 'Low priority'"
-python3 mini-slurm.py submit --cpus 2 --mem 1GB --priority 5 "sleep 5 && echo 'Medium priority'"
-python3 mini-slurm.py submit --cpus 2 --mem 1GB --priority 10 "sleep 5 && echo 'High priority'"
+mini-slurm submit --cpus 2 --mem 1GB --priority 0 "sleep 5 && echo 'Low priority'"
+mini-slurm submit --cpus 2 --mem 1GB --priority 5 "sleep 5 && echo 'Medium priority'"
+mini-slurm submit --cpus 2 --mem 1GB --priority 10 "sleep 5 && echo 'High priority'"
 
 # Watch the queue - high priority should run first
-watch -n 1 'python3 mini-slurm.py queue'
+watch -n 1 'mini-slurm queue'
 ```
 
 ### Step 8: Clean Up
@@ -181,7 +181,7 @@ watch -n 1 'python3 mini-slurm.py queue'
 ```bash
 # Stop the scheduler (Ctrl+C in Terminal 1)
 # Or kill it:
-pkill -f "mini-slurm.py scheduler"
+pkill -f "mini-slurm scheduler"
 
 # Optional: Clear database and logs
 rm ~/.mini_slurm.db

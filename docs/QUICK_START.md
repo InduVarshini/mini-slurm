@@ -4,21 +4,21 @@
 
 ### Step 1: Install & Start
 ```bash
-pip install psutil
-python3 mini-slurm.py scheduler &
+pip install mini-slurm
+mini-slurm scheduler &
 ```
 
 ### Step 2: Submit Jobs
 ```bash
-python3 mini-slurm.py submit --cpus 2 --mem 1GB "echo 'Hello!' && sleep 3"
-python3 mini-slurm.py submit --cpus 1 --mem 512MB --priority 10 "echo 'High priority!'"
+mini-slurm submit --cpus 2 --mem 1GB "echo 'Hello!' && sleep 3"
+mini-slurm submit --cpus 1 --mem 512MB --priority 10 "echo 'High priority!'"
 ```
 
 ### Step 3: Monitor
 ```bash
-python3 mini-slurm.py queue
-python3 mini-slurm.py stats
-python3 mini-slurm.py show 1
+mini-slurm queue
+mini-slurm stats
+mini-slurm show 1
 ```
 
 ### Step 4: Run Automated Tests
@@ -58,19 +58,19 @@ python3 mini-slurm.py show 1
 
 ```bash
 # Submit
-python3 mini-slurm.py submit --cpus 4 --mem 8GB --priority 5 "python train.py"
+mini-slurm submit --cpus 4 --mem 8GB --priority 5 "python train.py"
 
 # Monitor
-python3 mini-slurm.py queue
-python3 mini-slurm.py queue --status PENDING
-python3 mini-slurm.py stats
+mini-slurm queue
+mini-slurm queue --status PENDING
+mini-slurm stats
 
 # Manage
-python3 mini-slurm.py show <job_id>
-python3 mini-slurm.py cancel <job_id>
+mini-slurm show <job_id>
+mini-slurm cancel <job_id>
 
 # Scheduler
-python3 mini-slurm.py scheduler --total-cpus 8 --total-mem 16GB
+mini-slurm scheduler --total-cpus 8 --total-mem 16GB
 ```
 
 ## 📊 Understanding Output
@@ -98,13 +98,13 @@ ID  STAT      CPU  MEM(MB)  PRI  WAIT(s)  RUN(s)  SUBMIT              COMMAND
 
 **Scheduler not running?**
 ```bash
-ps aux | grep "mini-slurm.py scheduler"
+ps aux | grep "mini-slurm scheduler"
 # If not found, start it:
-python3 mini-slurm.py scheduler &
+mini-slurm scheduler &
 ```
 
 **Jobs stuck in PENDING?**
-- Check if resources available: `python3 mini-slurm.py stats`
+- Check if resources available: `mini-slurm stats`
 - Job may require more CPUs/memory than available
 - Check scheduler logs (stderr)
 
@@ -136,12 +136,12 @@ cat ~/.mini_slurm_logs/job_1.out
 - Submit multiple jobs and watch scheduling
 - Try resource constraints (submit jobs exceeding capacity)
 - Read extension ideas in `docs/GUIDE.md` for business value
-- Modify scheduling policy in `mini-slurm.py`
+- Modify scheduling policy in `src/mini_slurm/core.py`
 
 ## 📞 Quick Reference
 
 **Files:**
-- Code: `mini-slurm.py`
+- Package: `src/mini_slurm/`
 - Database: `~/.mini_slurm.db`
 - Logs: `~/.mini_slurm_logs/`
 

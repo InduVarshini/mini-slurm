@@ -6,7 +6,16 @@ This document describes the organization of the Mini-SLURM repository.
 
 ```
 mini-slurm/
-├── mini-slurm.py          # Main scheduler executable
+├── src/
+│   └── mini_slurm/       # Main package
+│       ├── __init__.py
+│       ├── core.py        # Core scheduler and topology classes
+│       ├── cli.py         # Command-line interface
+│       ├── database.py    # Database functions
+│       └── utils.py       # Utility functions
+├── pyproject.toml         # Package configuration
+├── MANIFEST.in            # Package manifest
+├── LICENSE                # MIT License
 ├── examples.py            # Example workload submission script
 ├── requirements.txt       # Python dependencies
 ├── README.md              # Main project documentation
@@ -19,12 +28,8 @@ mini-slurm/
 │   ├── ELASTIC_JOBS.md    # Elastic job feature documentation
 │   ├── TOPOLOGY.md        # Topology-aware scheduling documentation
 │   ├── TESTING_GUIDE.md   # Testing instructions
-│   ├── TEST_RESULTS.md    # Test results and verification
-│   ├── TEST_RESULTS_TOPOLOGY.md  # Topology test results
 │   ├── VIEW_LOGS.md       # Log viewing guide
 │   ├── VIEW_DATABASE.md   # Database inspection guide
-│   ├── MACBOOK_AIR_GUIDE.md  # MacBook Air specific guide
-│   ├── QUICK_TEST.md      # Quick testing guide
 │   └── STRUCTURE.md       # This file
 │
 ├── config/                # Configuration files
@@ -63,7 +68,11 @@ mini-slurm/
 
 ### Root Directory
 
-- **mini-slurm.py**: Main executable. Contains the scheduler, CLI, and core functionality.
+- **src/mini_slurm/**: Main package. Contains the scheduler, CLI, and core functionality.
+  - `core.py`: Core MiniSlurm scheduler class and TopologyConfig
+  - `cli.py`: Command-line interface and argument parsing
+  - `database.py`: SQLite database functions
+  - `utils.py`: Utility functions (memory parsing, timestamps, etc.)
 - **examples.py**: Script for submitting example workloads (training, simulations, etc.)
 - **requirements.txt**: Python package dependencies
 - **README.md**: Main project documentation and quick start
@@ -76,12 +85,11 @@ All documentation files are organized here:
 - **GUIDE.md**: Comprehensive guide covering all features
 - **ARCHITECTURE.md**: Deep technical dive into system design
 - **ELASTIC_JOBS.md**: Documentation for elastic/auto-resizing jobs feature
+- **TOPOLOGY.md**: Topology-aware scheduling documentation
 - **TESTING_GUIDE.md**: How to test the system
-- **TEST_RESULTS.md**: Test results and verification
 - **VIEW_LOGS.md**: Guide for viewing job logs
 - **VIEW_DATABASE.md**: Guide for inspecting the database
-- **MACBOOK_AIR_GUIDE.md**: MacBook Air specific usage guide
-- **QUICK_TEST.md**: Quick testing instructions
+- **STRUCTURE.md**: Repository structure documentation (this file)
 
 ### tasks/
 

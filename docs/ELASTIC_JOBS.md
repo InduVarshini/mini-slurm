@@ -18,7 +18,7 @@ Elastic jobs allow training workloads to:
 Submit an elastic job with minimum and maximum resource bounds:
 
 ```bash
-python3 mini-slurm.py submit \
+mini-slurm submit \
     --elastic \
     --cpus 2 \
     --min-cpus 2 \
@@ -105,20 +105,20 @@ for epoch in range(epochs):
 
 ```bash
 # Submit elastic job
-python3 mini-slurm.py submit \
+mini-slurm submit \
     --elastic --cpus 2 --min-cpus 2 --max-cpus 8 --mem 4GB \
     "python3 tasks/elastic_training.py"
 
 # View queue (shows elastic status)
-python3 mini-slurm.py queue
+mini-slurm queue
 ```
 
 ### Example 2: Multiple Elastic Jobs
 
 ```bash
 # Submit multiple elastic jobs
-python3 mini-slurm.py submit --elastic --cpus 2 --max-cpus 4 --mem 2GB "python3 task1.py"
-python3 mini-slurm.py submit --elastic --cpus 2 --max-cpus 4 --mem 2GB "python3 task2.py"
+mini-slurm submit --elastic --cpus 2 --max-cpus 4 --mem 2GB "python3 task1.py"
+mini-slurm submit --elastic --cpus 2 --max-cpus 4 --mem 2GB "python3 task2.py"
 
 # They will compete for resources and scale up/down as needed
 ```
@@ -127,12 +127,12 @@ python3 mini-slurm.py submit --elastic --cpus 2 --max-cpus 4 --mem 2GB "python3 
 
 ```bash
 # Submit elastic job (low priority)
-python3 mini-slurm.py submit \
+mini-slurm submit \
     --elastic --cpus 2 --max-cpus 8 --mem 4GB --priority 5 \
     "python3 tasks/elastic_training.py"
 
 # Submit high-priority job (will trigger scale-down)
-python3 mini-slurm.py submit \
+mini-slurm submit \
     --cpus 4 --mem 4GB --priority 10 \
     "python3 tasks/train_neural_network.py"
 ```
@@ -150,10 +150,10 @@ Configure elastic scaling behavior:
 
 ```bash
 # Run scheduler with custom threshold
-python3 mini-slurm.py scheduler --elastic-threshold 40.0
+mini-slurm scheduler --elastic-threshold 40.0
 
 # Disable elastic scaling (treat elastic jobs as fixed)
-python3 mini-slurm.py scheduler --disable-elastic
+mini-slurm scheduler --disable-elastic
 ```
 
 **Parameters:**
@@ -165,7 +165,7 @@ python3 mini-slurm.py scheduler --disable-elastic
 ### View Queue Status
 
 ```bash
-python3 mini-slurm.py queue
+mini-slurm queue
 ```
 
 Elastic jobs show current/max CPU allocation:
@@ -177,7 +177,7 @@ Elastic jobs show current/max CPU allocation:
 ### View Job Details
 
 ```bash
-python3 mini-slurm.py show <job_id>
+mini-slurm show <job_id>
 ```
 
 Shows elastic job configuration and current allocation.

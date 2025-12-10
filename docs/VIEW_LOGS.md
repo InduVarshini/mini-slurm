@@ -128,7 +128,7 @@ grep -h "Error\|error\|ERROR\|Failed\|failed" ~/.mini_slurm_logs/*.err
 ### View Logs by Job Status
 ```bash
 # First, get job IDs and their statuses
-python3 mini-slurm.py queue | grep -E "^\s*[0-9]" | while read line; do
+mini-slurm queue | grep -E "^\s*[0-9]" | while read line; do
     job_id=$(echo $line | awk '{print $1}')
     status=$(echo $line | awk '{print $2}')
     echo "Job $job_id: $status"

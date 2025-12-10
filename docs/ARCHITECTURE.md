@@ -166,7 +166,7 @@ while True:
 
 **Command Structure:**
 ```
-mini-slurm.py <command> [args]
+mini-slurm <command> [args]
 ```
 
 **Commands:**
@@ -187,7 +187,7 @@ mini-slurm.py <command> [args]
 ### Example 1: Job Submission
 
 ```
-User: python3 mini-slurm.py submit --cpus 2 --mem 4GB "python train.py"
+User: mini-slurm submit --cpus 2 --mem 4GB "python train.py"
   ↓
 CLI: cmd_submit(args)
   ↓

@@ -65,10 +65,10 @@ SwitchName=core1 Switches=rack[1-2]
 
 ```bash
 # Use default config file (~/.mini_slurm_topology.conf)
-python mini-slurm.py scheduler
+mini-slurm scheduler
 
 # Use custom config file
-python mini-slurm.py scheduler --topology-config /path/to/topology.conf
+mini-slurm scheduler --topology-config /path/to/topology.conf
 ```
 
 ### Viewing Node Assignments
@@ -76,7 +76,7 @@ python mini-slurm.py scheduler --topology-config /path/to/topology.conf
 When topology-aware scheduling is enabled, job details include node assignments:
 
 ```bash
-python mini-slurm.py show <job_id>
+mini-slurm show <job_id>
 ```
 
 Output includes:
