@@ -28,7 +28,7 @@ def submit_neural_network_training():
     
     for i, config in enumerate(configs):
         cmd = [
-            "python3", "mini-slurm.py", "submit",
+            "mini-slurm", "submit",
             "--cpus", str(config["cpus"]),
             "--mem", config["mem"],
             "--priority", str(10 - i),  # Higher priority for smaller jobs
@@ -38,7 +38,7 @@ def submit_neural_network_training():
         subprocess.run(cmd)
         print(f"  Submitted training job {i+1}: {config['model_size']} model, {config['epochs']} epochs")
     
-    print("\nView queue: python3 mini-slurm.py queue")
+    print("\nView queue: mini-slurm queue")
 
 
 def submit_monte_carlo_simulations():
@@ -53,7 +53,7 @@ def submit_monte_carlo_simulations():
     
     for i, sim in enumerate(simulations):
         cmd = [
-            "python3", "mini-slurm.py", "submit",
+            "mini-slurm", "submit",
             "--cpus", str(sim["cpus"]),
             "--mem", sim["mem"],
             "--priority", str(sim["priority"]),
@@ -63,7 +63,7 @@ def submit_monte_carlo_simulations():
         subprocess.run(cmd)
         print(f"  Submitted Monte Carlo job {i+1}: {sim['type']} with {sim['samples']:,} samples")
     
-    print("\nView queue: python3 mini-slurm.py queue")
+    print("\nView queue: mini-slurm queue")
 
 
 def submit_matrix_operations():
@@ -79,7 +79,7 @@ def submit_matrix_operations():
     
     for i, op_config in enumerate(operations):
         cmd = [
-            "python3", "mini-slurm.py", "submit",
+            "mini-slurm", "submit",
             "--cpus", str(op_config["cpus"]),
             "--mem", op_config["mem"],
             "--priority", str(op_config["priority"]),
@@ -89,7 +89,7 @@ def submit_matrix_operations():
         subprocess.run(cmd)
         print(f"  Submitted matrix operation {i+1}: {op_config['op']} on {op_config['size']}x{op_config['size']} matrix")
     
-    print("\nView queue: python3 mini-slurm.py queue")
+    print("\nView queue: mini-slurm queue")
 
 
 def submit_image_processing():
@@ -110,7 +110,7 @@ def submit_image_processing():
             env_vars += f" FEATURE_DIM={job['feature_dim']}"
         
         cmd = [
-            "python3", "mini-slurm.py", "submit",
+            "mini-slurm", "submit",
             "--cpus", str(job["cpus"]),
             "--mem", job["mem"],
             "--priority", str(job["priority"]),
@@ -119,7 +119,7 @@ def submit_image_processing():
         subprocess.run(cmd)
         print(f"  Submitted image processing job {i+1}: {job['task']} with {job['num_images']} images")
     
-    print("\nView queue: python3 mini-slurm.py queue")
+    print("\nView queue: mini-slurm queue")
 
 
 def submit_data_processing():
@@ -143,7 +143,7 @@ def submit_data_processing():
             env_vars += f" NUM_ELEMENTS={job['num_elements']}"
         
         cmd = [
-            "python3", "mini-slurm.py", "submit",
+            "mini-slurm", "submit",
             "--cpus", str(job["cpus"]),
             "--mem", job["mem"],
             "--priority", str(job["priority"]),
@@ -152,7 +152,7 @@ def submit_data_processing():
         subprocess.run(cmd)
         print(f"  Submitted data processing job {i+1}: {job['task']}")
     
-    print("\nView queue: python3 mini-slurm.py queue")
+    print("\nView queue: mini-slurm queue")
 
 
 def submit_scientific_computing():
@@ -179,7 +179,7 @@ def submit_scientific_computing():
             env_vars += f" GRID_SIZE={sim['grid_size']}"
         
         cmd = [
-            "python3", "mini-slurm.py", "submit",
+            "mini-slurm", "submit",
             "--cpus", str(sim["cpus"]),
             "--mem", sim["mem"],
             "--priority", str(sim["priority"]),
@@ -188,7 +188,7 @@ def submit_scientific_computing():
         subprocess.run(cmd)
         print(f"  Submitted scientific computing job {i+1}: {sim['type']}")
     
-    print("\nView queue: python3 mini-slurm.py queue")
+    print("\nView queue: mini-slurm queue")
 
 
 def submit_elastic_training_jobs():
@@ -205,7 +205,7 @@ def submit_elastic_training_jobs():
     
     # Submit elastic training job
     cmd = [
-        "python3", "mini-slurm.py", "submit",
+        "mini-slurm", "submit",
         "--elastic",
         "--cpus", "2",  # Start with 2 CPUs
         "--min-cpus", "2",  # Minimum 2 CPUs
@@ -220,7 +220,7 @@ def submit_elastic_training_jobs():
     # Submit a high-priority job that will trigger scale-down
     time.sleep(1)
     cmd = [
-        "python3", "mini-slurm.py", "submit",
+        "mini-slurm", "submit",
         "--cpus", "4",
         "--mem", "4GB",
         "--priority", "10",  # Higher priority - will trigger scale-down
@@ -251,7 +251,7 @@ def submit_macbook_friendly_workloads():
     ]
     for i, config in enumerate(configs):
         cmd = [
-            "python3", "mini-slurm.py", "submit",
+            "mini-slurm", "submit",
             "--cpus", str(config["cpus"]),
             "--mem", config["mem"],
             "--priority", str(10 - i),
@@ -269,7 +269,7 @@ def submit_macbook_friendly_workloads():
     ]
     for i, sim in enumerate(simulations):
         cmd = [
-            "python3", "mini-slurm.py", "submit",
+            "mini-slurm", "submit",
             "--cpus", str(sim["cpus"]),
             "--mem", sim["mem"],
             "--priority", str(sim["priority"]),
@@ -287,7 +287,7 @@ def submit_macbook_friendly_workloads():
     ]
     for i, op_config in enumerate(operations):
         cmd = [
-            "python3", "mini-slurm.py", "submit",
+            "mini-slurm", "submit",
             "--cpus", str(op_config["cpus"]),
             "--mem", op_config["mem"],
             "--priority", str(op_config["priority"]),
@@ -310,7 +310,7 @@ def submit_macbook_friendly_workloads():
         else:
             env_vars += f" FEATURE_DIM={job['feature_dim']}"
         cmd = [
-            "python3", "mini-slurm.py", "submit",
+            "mini-slurm", "submit",
             "--cpus", str(job["cpus"]),
             "--mem", job["mem"],
             "--priority", str(job["priority"]),
@@ -332,7 +332,7 @@ def submit_macbook_friendly_workloads():
         else:
             env_vars += f" NUM_SERIES={job['num_series']} SERIES_LENGTH={job['series_length']}"
         cmd = [
-            "python3", "mini-slurm.py", "submit",
+            "mini-slurm", "submit",
             "--cpus", str(job["cpus"]),
             "--mem", job["mem"],
             "--priority", str(job["priority"]),
@@ -354,7 +354,7 @@ def submit_macbook_friendly_workloads():
         else:
             env_vars += f" MATRIX_SIZE={sim['matrix_size']}"
         cmd = [
-            "python3", "mini-slurm.py", "submit",
+            "mini-slurm", "submit",
             "--cpus", str(sim["cpus"]),
             "--mem", sim["mem"],
             "--priority", str(sim["priority"]),
@@ -366,7 +366,7 @@ def submit_macbook_friendly_workloads():
     print("\n" + "=" * 60)
     print("All MacBook Air-friendly jobs submitted!")
     print("Total memory per job: 2GB (safe for 16GB system)")
-    print("Use 'python3 mini-slurm.py queue' to view status.")
+    print("Use 'mini-slurm queue' to view status.")
     print("=" * 60)
 
 
@@ -401,7 +401,7 @@ def submit_all_heavy_workloads():
     submit_scientific_computing()
     
     print("\n" + "=" * 60)
-    print("All jobs submitted! Use 'python3 mini-slurm.py queue' to view status.")
+    print("All jobs submitted! Use 'mini-slurm queue' to view status.")
     print("=" * 60)
 
 
