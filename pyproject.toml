@@ -39,10 +39,10 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/yourusername/mini-slurm"
-Documentation = "https://github.com/yourusername/mini-slurm#readme"
-Repository = "https://github.com/yourusername/mini-slurm"
-Issues = "https://github.com/yourusername/mini-slurm/issues"
+Homepage = "https://github.com/InduVarshini/mini-slurm"
+Documentation = "https://github.com/InduVarshini/mini-slurm#readme"
+Repository = "https://github.com/InduVarshini/mini-slurm"
+Issues = "https://github.com/InduVarshini/mini-slurm/issues"
 
 [project.scripts]
 mini-slurm = "mini_slurm.cli:main"

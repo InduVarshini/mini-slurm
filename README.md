@@ -29,7 +29,7 @@ pip install mini-slurm
 
 1. Clone or download this repository:
 ```bash
-git clone https://github.com/yourusername/mini-slurm.git
+git clone https://github.com/InduVarshini/mini-slurm.git
 cd mini-slurm
 ```
 
